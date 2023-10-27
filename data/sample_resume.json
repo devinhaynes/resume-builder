@@ -1,0 +1,68 @@
+{
+  "applicant_info": {
+    "name": "John Doe",
+    "contact": {
+      "email": "john.doe@email.com",
+      "phone": "123-456-7890",
+      "address": "123 Main St, City, State ZIP"
+    },
+    "linkedin_profile": "https://www.linkedin.com/in/johndoe",
+    "website": "https://www.johndoeportfolio.com"
+  },
+  "job_description": {
+    "job_title": "Software Engineer",
+    "company_name": "ABC Tech",
+    "company_address": "456 Tech Blvd, City, State ZIP",
+    "job_posting_url": "https://www.abctech.com/jobs/software-engineer"
+  },
+  "resume": {
+    "summary": "Experienced software engineer with a strong background in web development...",
+    "education": [
+      {
+        "degree": "Bachelor of Science in Computer Science",
+        "school": "XYZ University",
+        "graduation_year": "2020",
+        "gpa": "3.8"
+      }
+    ],
+    "work_experience": [
+      {
+        "job_title": "Junior Web Developer",
+        "company_name": "Tech Solutions Inc.",
+        "start_date": "May 2020",
+        "end_date": "January 2022",
+        "responsibilities": [
+          "Developed and maintained web applications using HTML, CSS, and JavaScript.",
+          "Collaborated with the design team to implement responsive web designs.",
+          "Performed debugging and testing to ensure the quality and reliability of web applications."
+        ]
+      }
+    ],
+    "certifications": [
+      {
+        "name": "Certified Web Developer",
+        "issuing_organization": "Web Development Institute",
+        "year_earned": "2019"
+      },
+      {
+        "name": "Agile Certified Practitioner",
+        "issuing_organization": "Project Management Institute",
+        "year_earned": "2021"
+      }
+    ],
+    "skills": ["JavaScript", "HTML/CSS", "React", "Node.js", "SQL"]
+  },
+  "cover_letter": {
+    "opening_paragraph": "I am writing to express my interest in the Software Engineer position at ABC Tech...",
+    "key_skills_paragraph": "With my experience in web development and proficiency in JavaScript, HTML/CSS, React, Node.js, and SQL...",
+    "why_company_paragraph": "I am particularly excited about the innovative work being done at ABC Tech and the company's commitment to excellence...",
+    "closing_paragraph": "Thank you for considering my application. I look forward to the opportunity to discuss how my skills and experience align with the goals of ABC Tech."
+  },
+  "thank_you_letter": {
+    "recipient_name": "Hiring Manager",
+    "interview_date": "October 30, 2023",
+    "intro_paragraph": "I wanted to extend my sincere gratitude for the opportunity to interview for the Software Engineer position at ABC Tech...",
+    "highlight_experience_paragraph": "During the interview, I was thrilled to discuss my experience in web development and how it aligns with the needs of your team...",
+    "closing_paragraph": "Once again, thank you for your time and consideration. I am excited about the prospect of contributing to ABC Tech's success."
+  }
+}
