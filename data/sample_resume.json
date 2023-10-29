@@ -1,6 +1,7 @@
 {
   "applicant_info": {
-    "name": "John Doe",
+    "first_name": "John",
+    "last_name": "Doe",
     "contact": {
       "email": "john.doe@email.com",
       "phone": "123-456-7890",
@@ -16,41 +17,102 @@
     "job_posting_url": "https://www.abctech.com/jobs/software-engineer"
   },
   "resume": {
-    "summary": "Experienced software engineer with a strong background in web development...",
+    "summary": "Software Engineer specializing in React application development with a strong grasp of UI/UX design principles, CSS and CSS Preprocessors, and REST API integration. Proven expertise in creating responsive and visually appealing web applications. Committed to staying current with the latest front-end technologies and best practices.",
     "education": [
       {
-        "degree": "Bachelor of Science in Computer Science",
-        "school": "XYZ University",
+        "degree": "Bachelor of Science in Computer Science - Software Development",
+        "school": "ECPI University",
         "graduation_year": "2020",
         "gpa": "3.8"
       }
     ],
     "work_experience": [
       {
-        "job_title": "Junior Web Developer",
-        "company_name": "Tech Solutions Inc.",
-        "start_date": "May 2020",
-        "end_date": "January 2022",
+        "job_title": "Product Engineer",
+        "company_name": "Decisions",
+        "location": "Virginia Beach, VA",
+        "start_date": "February 2023",
+        "end_date": "October 2023",
         "responsibilities": [
-          "Developed and maintained web applications using HTML, CSS, and JavaScript.",
-          "Collaborated with the design team to implement responsive web designs.",
-          "Performed debugging and testing to ensure the quality and reliability of web applications."
+          "Developed React-based applications, including an internal App Store and a custom Project Management platform, optimizing project management.",
+          "Integrated various JavaScript controls into a .NET platform to leverage external APIs such as ArcGIS maps and Moneris Payment platform.",
+          "Enhanced process automation by integrating the OpenAI API into the platform."
+        ]
+      },
+      {
+        "job_title": "CEO/Developer (Freelancer)",
+        "company_name": "Tidal Sites",
+        "location": "Virginia Beach, VA",
+        "start_date": "April 2019",
+        "end_date": "Current",
+        "responsibilities": [
+          "Designed and constructed custom websites using Vanilla JS or ReactJS, delivering tailored solutions.",
+          "Created logos, UI/UX designs, and graphic elements for clients.",
+          "Orchestrated AWS Infrastructure for hosting and DNS management and implemented GitHub Actions for CI/CD automation."
+        ]
+      },
+      {
+        "job_title": "Full-Stack Software Developer",
+        "company_name": "NUBorders",
+        "location": "Remote",
+        "start_date": "January 2022",
+        "end_date": "August 2022",
+        "responsibilities": [
+          "Managed UI/UX standards, conducted code reviews, maintained ticket tracking, and documented processes.",
+          "Streamlined local development by containerizing AWS microservices using Docker.",
+          "Ensured compliance with 508 standards for a Proof of Concept application."
+        ]
+      },
+      {
+        "job_title": "Full-Stack Software Developer",
+        "company_name": "U.S. State Dept. (contractor)",
+        "location": "Remote",
+        "start_date": "September 2019",
+        "end_date": "September 2021",
+        "responsibilities": [
+          "Spearheaded the transformation of an outdated PHP application into a modern React app, supporting Pipeline and Infrastructure engineers.",
+          "Automated the building of templated Wordpress applications in Azure through CI/CD pipelines and Infrastructure as Code.",
+          "Served as Subject Matter Expert for three JavaScript-based applications, enhancing features and UI/UX design for a superior customer experience.",
+          "Engineered an AWS to Azure cloud migration for multiple applications, encompassing software modifications, DB upgrades, and infrastructure provisioning."
+        ]
+      },
+      {
+        "job_title": "Information Systems Technician",
+        "company_name": "U.S. Navy",
+        "location": "Virginia Beach, VA",
+        "start_date": "November 2009",
+        "end_date": "September 2017",
+        "responsibilities": [
+          "As Network Operations Center Lead Administrator, maintained IP services and delivered Tier 1 support for Fleet customers.",
+          "Drafted a Personnel Qualification Standard as a Subject Matter Expert for the Mobile Communications Platform to enhance system training."
         ]
       }
     ],
     "certifications": [
       {
-        "name": "Certified Web Developer",
-        "issuing_organization": "Web Development Institute",
+        "name": "A+",
+        "issuing_organization": "CompTIA",
         "year_earned": "2019"
       },
       {
-        "name": "Agile Certified Practitioner",
-        "issuing_organization": "Project Management Institute",
+        "name": "Helpdesk Certification",
+        "issuing_organization": "ExpertRating",
         "year_earned": "2021"
       }
     ],
-    "skills": ["JavaScript", "HTML/CSS", "React", "Node.js", "SQL"]
+    "skills": [
+      "React",
+      "NextJS",
+      "UI/UX Design",
+      "Node.js",
+      "508 Compliance",
+      "Git",
+      "Linux",
+      "Agile",
+      "CI/CD Pipelines",
+      "Cloud Development",
+      "REST API Design"
+    ]
   },
   "cover_letter": {
     "opening_paragraph": "I am writing to express my interest in the Software Engineer position at ABC Tech...",

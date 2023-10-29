@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-input.required::after {
-  content: "required";
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: rgba(0, 0, 0, 0.75);
+.submit-button {
+  @apply bg-teal-700 text-lg text-white px-4 py-2 my-4 rounded-full hover:scale-105 hover:shadow-sm transition cursor-pointer;
 }

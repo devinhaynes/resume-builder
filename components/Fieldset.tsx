@@ -4,16 +4,18 @@ import AddNewButton from "./AddNewButton";
 
 type FieldsetProps = {
   legend: string;
+  initiallyOpen?: boolean;
   children?: ReactNode;
   addNewButtonHandler?: () => void;
 };
 
 export default function Fieldset({
   legend,
+  initiallyOpen = false,
   children,
   addNewButtonHandler,
 }: FieldsetProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initiallyOpen);
   return (
     <fieldset className="bg-white flex flex-col gap-5 my-10 p-5 shadow-card rounded-lg border-black/2 w-full max-w-[40em] h-max">
       <button

@@ -1,22 +1,27 @@
 "use client";
 
+// Libraries
+import { FormEvent, MutableRefObject, useRef, useState } from "react";
 import {
-  FormEvent,
-  MutableRefObject,
-  ReactNode,
-  useRef,
-  useState,
-} from "react";
-import { AiFillDelete } from "react-icons/ai";
+  AiFillDelete,
+  AiOutlineSave,
+  AiOutlinePlus,
+  AiOutlineCheck,
+  AiFillCheckCircle,
+} from "react-icons/ai";
 
+// Components
 import FormGroup from "./FormGroup";
 import WorkHistory from "./WorkHistory";
+import SectionDescription from "./SectionDescription";
+import Fieldset from "./Fieldset";
+import AddNewButton from "./AddNewButton";
 
+// Types
 import type { TWorkHistory } from "@/types/FormTypes";
 
-import Fieldset from "./Fieldset";
+// Utilities
 import { createResume } from "@/actions/createResume";
-import AddNewButton from "./AddNewButton";
 
 export default function Form() {
   const [workHistory, setWorkHistory] = useState<TWorkHistory[]>([]);
@@ -97,8 +102,22 @@ export default function Form() {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
+      {/* Job Description */}
+      <Fieldset legend="Job Description" initiallyOpen>
+        <SectionDescription description="Upload a file or paste in a job description that you have found on a job board. This will be analyzed to produce a more targeted resume."></SectionDescription>
+        <FormGroup
+          type="file"
+          label="Job Posting File Upload"
+          name="job_description_upload"
+        />
+        <FormGroup
+          type="textarea"
+          name="job_description"
+          label="Job Description"
+        />
+      </Fieldset>
       {/* User Information */}
-      <Fieldset legend="Personal Information">
+      <Fieldset legend="Personal Information" initiallyOpen>
         <FormGroup type="text" label="First Name" name="fname" required />
         <FormGroup type="text" label="Last Name" name="lname" required />
         <FormGroup type="email" label="Email Address" name="email" required />
@@ -154,10 +173,21 @@ export default function Form() {
           <p className="mt-3 text-gray-700 text-sm mb-1">Recommended Skills:</p>
           <ul className="flex gap-2 flex-wrap">
             {recommendedSkills.map((skill, i) => (
-              <SkillCard key={i} skill={skill} />
+              <SkillCard key={i} skill={skill} recommended />
             ))}
           </ul>
         </SectionDescription>
+        <div>
+          <p className="mt-3 text-gray-700 text-sm mb-1">My Skills:</p>
+          <ul className="flex gap-2 flex-wrap">
+            {recommendedSkills.map((skill, i) => (
+              <SkillCard key={i} skill={skill} />
+            ))}
+            {[...Array(7)].map((_, i) => {
+              return <SkillCard key={i} skill="Test" />;
+            })}
+          </ul>
+        </div>
         {skills.map((_, i) => (
           <div key={i} className="flex items-center gap-2">
             <FormGroup type="text" name={"skill" + i} placeholder="New Skill" />
@@ -190,44 +220,40 @@ export default function Form() {
         <FormGroup type="textarea" name="additionalInfo" />
       </Fieldset>
 
-      <div className="w-full flex flex-end">
+      <div className="w-full flex gap-4">
         <button
-          type="submit"
-          className="bg-teal-700 text-lg text-white px-4 py-2 my-4 rounded-full hover:scale-105 hover:shadow-sm transition cursor-pointer"
+          type="button"
+          className="bg-white flex items-center text-lg border border-2 border-teal-900 text-teal-900 py-2 px-4 gap-2 rounded-full my-4 hover:scale-105 hover:shadow-sm transition cursor-pointer"
         >
-          Submit
+          <span>Save</span>
+          <AiOutlineSave className="text-2xl" />
+        </button>
+        <button type="submit" className="submit-button">
+          Generate Resume
         </button>
       </div>
     </form>
   );
 }
 
-type SectionDescriptionProps = {
-  description: string;
-  children?: ReactNode;
-};
-
-function SectionDescription({
-  description,
-  children,
-}: SectionDescriptionProps) {
-  return (
-    <div className="-mt-5 mb-5">
-      <p className="text-gray-600 py-4 text-sm">{description}</p>
-      {children}
-    </div>
-  );
-}
-
 type SkillCardProps = {
   skill: string;
+  recommended?: boolean;
 };
 
-function SkillCard({ skill }: SkillCardProps) {
+function SkillCard({ skill, recommended = false }: SkillCardProps) {
   return (
-    <li className="bg-teal-600 text-white rounded-full mb-4">
-      <button className="cursor-pointer px-4 py-1 text-sm" type="button">
-        {skill}
+    <li
+      className={`rounded-full ${
+        recommended ? "bg-gray-200" : "bg-teal-700 text-white"
+      }`}
+    >
+      <button
+        className="cursor-pointer px-4 py-1 text-sm flex gap-2 items-center"
+        type="button"
+      >
+        <span>{skill}</span>
+        {recommended ? <AiOutlinePlus /> : <AiFillDelete />}
       </button>
     </li>
   );

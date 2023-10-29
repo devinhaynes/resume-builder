@@ -1,6 +1,16 @@
-import { ReactNode, ChangeEvent } from "react";
+import { ReactNode } from "react";
 
-type InputType = "text" | "checkbox" | "textarea" | "button" | "email" | "date";
+import { skills } from "@/data/skills.json";
+
+type InputType =
+  | "text"
+  | "checkbox"
+  | "textarea"
+  | "button"
+  | "email"
+  | "date"
+  | "dropdown"
+  | "file";
 
 type FormGroupProps = {
   label?: string;
@@ -37,13 +47,17 @@ export default function FormGroup({
         return <DatePicker />;
       case "email":
         return <Email name={name} />;
+      case "dropdown":
+        return <Dropdown options={skills} />;
+      case "file":
+        return <FileInput name={name} acceptableFormats={[".pdf", ".docx"]} />;
       default:
         break;
     }
   };
   return (
-    <div className="FormGroup max-w-full">
-      <label className="flex mb-4 flex-col justify-center">
+    <div className="FormGroup max-w-full mb-8">
+      <label className="flex flex-col justify-center">
         <span className="text-sm text-gray-600">{label}</span>
         {ElementToReturn()}
       </label>
@@ -111,4 +125,28 @@ function Email({ name, required }: OptionalProps) {
       required={required}
     />
   );
+}
+
+function FileInput({
+  name,
+  acceptableFormats = [],
+}: OptionalProps & { acceptableFormats: string[] }) {
+  return <input type="file" name={name} accept={acceptableFormats.join(",")} />;
+}
+
+function Dropdown({ name, options }: OptionalProps & { options: string[] }) {
+  return (
+    <select name={name} multiple>
+      {options.map((option, i) => (
+        <option key={option + i} value={formatOption(option)}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+function formatOption(option: string) {
+  option = option.toLowerCase().trim().replace(" ", "_");
+  return option;
 }

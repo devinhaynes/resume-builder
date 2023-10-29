@@ -1,5 +1,9 @@
 "use server";
 
+import { renderToFile } from "@react-pdf/renderer";
+import ResumePDF from "@/components/ResumePDF";
+import { createElement } from "react";
+
 type ContactInfo = {
   email: string;
   phone: string;
@@ -50,7 +54,7 @@ type ResumeData = {
   skills: string[];
 };
 
-type RequestorInformation = {
+export type RequestorInformation = {
   applicant_info: ApplicantInfo;
   job_description: JobDescription;
   resume: ResumeData;
@@ -87,4 +91,29 @@ export const createResume = async (formData: FormData) => {
   // Validate data
 
   // Add to requestorInformation
+
+  // Save pdf to local file system
+  try {
+    createPDF({
+      applicant_info: requestorInformation.applicant_info,
+      resume: requestorInformation.resume,
+      job_description: requestorInformation.job_description,
+    });
+  } catch (e) {
+    console.error(String(e));
+  }
+};
+
+const createPDF = async ({
+  applicant_info,
+  resume,
+  job_description,
+}: RequestorInformation) => {
+  return await renderToFile(
+    createElement(ResumePDF, {
+      title: "test",
+      resumeData: { applicant_info, resume, job_description },
+    }),
+    `${__dirname}/resume.pdf`
+  );
 };
