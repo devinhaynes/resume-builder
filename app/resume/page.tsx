@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 import Form from "@/components/Form";
 import PDFPreview from "@/components/PDFPreview";
 import ResumePDF from "@/components/ResumePDF";

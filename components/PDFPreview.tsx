@@ -15,9 +15,6 @@ type PDFPreviewProps = {
 export default function PDFPreview({ children }: PDFPreviewProps) {
   return (
     <div className="bg-gray-700 p-10 rounded-md mt-10 h-max">
-      {/* <PDFDownloadLink document={<></>} fileName="resume">
-        <button className="bg-white rounded py-1 px-4">Download</button>
-      </PDFDownloadLink> */}
       <button className="bg-teal-700 text-white border border-white rounded py-1 px-4 mb-10">
         <PDFDownloadLink
           document={

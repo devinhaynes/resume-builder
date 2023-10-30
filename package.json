@@ -6,18 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "cp -R ./node_modules/pspdfkit/dist/pspdfkit-lib ./public"
   },
   "dependencies": {
     "@react-pdf/renderer": "^3.1.14",
     "next": "14.0.0",
+    "pdf.js-extract": "^0.2.1",
+    "pdfjs-dist": "^3.11.174",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pdfjs-dist": "^2.10.378",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",

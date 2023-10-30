@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-gray-100`}>
         <Header />
         {children}
+        <Script src="https://www.jsdelivr.com/package/npm/pdfjs-dist" />
       </body>
     </html>
   );
