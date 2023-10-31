@@ -22,8 +22,10 @@ import type { TWorkHistory } from "@/types/FormTypes";
 
 // Utilities
 import { createResume } from "@/actions/createResume";
+import { useResumeContext } from "@/state/resumeContext";
 
 export default function Form() {
+  const { resume, setResume } = useResumeContext();
   const [workHistory, setWorkHistory] = useState<TWorkHistory[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [recommendedSkills, setRecommendedSkills] = useState<string[]>([
@@ -118,7 +120,13 @@ export default function Form() {
       </Fieldset>
       {/* User Information */}
       <Fieldset legend="Personal Information" initiallyOpen>
-        <FormGroup type="text" label="First Name" name="fname" required />
+        <FormGroup
+          type="text"
+          label="First Name"
+          name="fname"
+          value={resume?.applicant_info.first_name}
+          required
+        />
         <FormGroup type="text" label="Last Name" name="lname" required />
         <FormGroup type="email" label="Email Address" name="email" required />
         <FormGroup type="text" label="Phone Number" name="phone" />
@@ -223,7 +231,7 @@ export default function Form() {
       <div className="w-full flex gap-4">
         <button
           type="button"
-          className="bg-white flex items-center text-lg border border-2 border-teal-900 text-teal-900 py-2 px-4 gap-2 rounded-full my-4 hover:scale-105 hover:shadow-sm transition cursor-pointer"
+          className="bg-white flex items-center text-lg border-2 border-teal-900 text-teal-900 py-2 px-4 gap-2 rounded-full my-4 hover:scale-105 hover:shadow-sm transition cursor-pointer"
         >
           <span>Save</span>
           <AiOutlineSave className="text-2xl" />

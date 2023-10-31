@@ -16,7 +16,7 @@ export default function WorkHistory({
   removeWorkHistory,
 }: WorkHistoryProps) {
   return (
-    <div className="WorkHistory mt-5 p-5 border border-2 flex flex-col gap-2 rounded-lg">
+    <div className="WorkHistory mt-5 p-5 border-2 flex flex-col gap-2 rounded-lg">
       <FormGroup
         type="text"
         label="Job Title"

@@ -6,12 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "cp -R ./node_modules/pspdfkit/dist/pspdfkit-lib ./public"
+    "lint": "next lint"
   },
   "dependencies": {
     "@react-pdf/renderer": "^3.1.14",
     "next": "14.0.0",
+    "openai": "^4.14.1",
     "pdf.js-extract": "^0.2.1",
     "pdfjs-dist": "^3.11.174",
     "react": "^18",

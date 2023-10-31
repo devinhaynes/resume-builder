@@ -74,7 +74,7 @@ type OptionalProps = {
 function TextArea({ name, required }: OptionalProps) {
   return (
     <textarea
-      className="border rounded focus:outline-teal-700 max-w-full py-1 px-2 text-lg w-full max-w-full"
+      className="border rounded focus:outline-teal-700 py-1 px-2 text-lg w-full max-w-full"
       name={name}
       rows={10}
       required={required}

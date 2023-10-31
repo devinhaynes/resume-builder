@@ -1,0 +1,85 @@
+{
+  "applicant_info": {
+    "first_name": "",
+    "last_name": "",
+    "contact": {
+      "email": "",
+      "phone": "",
+      "address": ""
+    },
+    "linkedin_profile": "",
+    "website": ""
+  },
+  "job_description": {
+    "job_title": "",
+    "company_name": "",
+    "company_address": "",
+    "job_posting_url": ""
+  },
+  "resume": {
+    "summary": "",
+    "education": [
+      {
+        "degree": "",
+        "school": "",
+        "graduation_year": "",
+        "gpa": ""
+      }
+    ],
+    "work_experience": [
+      {
+        "job_title": "",
+        "company_name": "",
+        "location": "",
+        "start_date": "",
+        "end_date": "",
+        "responsibilities": [""]
+      },
+      {
+        "job_title": "",
+        "company_name": "",
+        "location": "",
+        "start_date": "",
+        "end_date": "",
+        "responsibilities": [""]
+      },
+      {
+        "job_title": "",
+        "company_name": "",
+        "location": "",
+        "start_date": "",
+        "end_date": "",
+        "responsibilities": [""]
+      },
+      {
+        "job_title": "",
+        "company_name": "",
+        "location": "",
+        "start_date": "",
+        "end_date": "",
+        "responsibilities": [""]
+      }
+    ],
+    "certifications": [
+      {
+        "name": "",
+        "issuing_organization": "",
+        "year_earned": ""
+      }
+    ],
+    "skills": [""]
+  },
+  "cover_letter": {
+    "opening_paragraph": "",
+    "key_skills_paragraph": "",
+    "why_company_paragraph": "",
+    "closing_paragraph": ""
+  },
+  "thank_you_letter": {
+    "recipient_name": "",
+    "interview_date": "",
+    "intro_paragraph": "",
+    "highlight_experience_paragraph": "",
+    "closing_paragraph": ""
+  }
+}

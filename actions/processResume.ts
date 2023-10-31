@@ -5,10 +5,17 @@ import * as pdfjs from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import fs from "fs";
 import { TextItem } from "pdfjs-dist/types/src/display/api";
+import { sendChatCompletion, generateChatPrompt } from "@/lib/openai";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-export async function processResume(formData: FormData) {
+type ProcessError = {
+  message: string;
+};
+
+export async function processResume(
+  formData: FormData
+): Promise<string | ProcessError> {
   // Process uploaded PDF file
   const file = formData.get("resume_upload") as File;
 
@@ -17,11 +24,20 @@ export async function processResume(formData: FormData) {
   fs.appendFileSync("data/resume.pdf", Buffer.from(buffer));
 
   // Read PDF Text
-  const text = await getPDFText("data/resume.pdf");
+  const text = (await getPDFText("data/resume.pdf")).join("");
 
-  console.log(text);
+  // console.log(text);
 
-  // Send to OpenAI for formatting
+  const prompts = generateChatPrompt(text);
+
+  // // Send to OpenAI for formatting
+  const chatResponseMessage = await sendChatCompletion(prompts);
+
+  if (chatResponseMessage) {
+    return JSON.parse(chatResponseMessage);
+  }
+
+  return { message: "Unable to process resume data" };
 }
 
 async function getPDFText(pdfUrl: string) {

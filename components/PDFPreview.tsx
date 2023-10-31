@@ -16,7 +16,7 @@ export default function PDFPreview({ children }: PDFPreviewProps) {
   return (
     <div className="bg-gray-700 p-10 rounded-md mt-10 h-max">
       <button className="bg-teal-700 text-white border border-white rounded py-1 px-4 mb-10">
-        <PDFDownloadLink
+        {/* <PDFDownloadLink
           document={
             <ResumePDF
               title="Test"
@@ -28,7 +28,7 @@ export default function PDFPreview({ children }: PDFPreviewProps) {
           {({ blob, url, loading, error }) =>
             loading ? "Loading document..." : "Download now!"
           }
-        </PDFDownloadLink>
+        </PDFDownloadLink> */}
       </button>
       {children}
     </div>

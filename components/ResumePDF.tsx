@@ -8,7 +8,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-import type { RequestorInformation } from "@/actions/createResume";
+import type { RequestorInformation } from "@/types/Resume";
 
 Font.register({
   family: "Nunito",
