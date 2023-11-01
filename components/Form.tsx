@@ -1,109 +1,59 @@
 "use client";
 
 // Libraries
-import { FormEvent, MutableRefObject, useRef, useState } from "react";
-import {
-  AiFillDelete,
-  AiOutlineSave,
-  AiOutlinePlus,
-  AiOutlineCheck,
-  AiFillCheckCircle,
-} from "react-icons/ai";
+import { AiFillDelete, AiOutlineSave, AiOutlinePlus } from "react-icons/ai";
+
+import { useForm, FieldValues, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Components
 import FormGroup from "./FormGroup";
-import WorkHistory from "./WorkHistory";
 import SectionDescription from "./SectionDescription";
 import Fieldset from "./Fieldset";
-import AddNewButton from "./AddNewButton";
-
-// Types
-import type { TWorkHistory } from "@/types/FormTypes";
 
 // Utilities
-import { createResume } from "@/actions/createResume";
-import { useResumeContext } from "@/state/resumeContext";
-
+import { ResumeSchema } from "@/lib/ResumeSchema";
 export default function Form() {
-  const { resume, setResume } = useResumeContext();
-  const [workHistory, setWorkHistory] = useState<TWorkHistory[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
-  const [recommendedSkills, setRecommendedSkills] = useState<string[]>([
-    "Agile",
-    "React",
-    "Running",
-    "Testing",
-    "Breaking code",
-  ]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(ResumeSchema),
+  });
 
-  const formRef: MutableRefObject<HTMLFormElement | null> = useRef(null);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "work_history",
+  });
 
-  function generateId() {
-    if (workHistory.length > 0) {
-      const ids = workHistory.map((wh) => wh.id);
-      return Math.max(...ids) + 1;
-    }
+  const {
+    fields: edFields,
+    append: appendEd,
+    remove: removeEd,
+  } = useFieldArray({
+    control,
+    name: "education",
+  });
 
-    return 1;
-  }
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+  } = useFieldArray({
+    control,
+    name: "skills",
+  });
 
-  function addWorkHistory() {
-    const id = generateId();
-    const title = "Work History " + id;
-
-    const emptyWorkHistory: TWorkHistory = {
-      id,
-      title,
-      position: "",
-      organization: "",
-      location: "",
-      description: "",
-    };
-
-    setWorkHistory([...workHistory, emptyWorkHistory]);
-  }
-
-  function removeWorkHistory(id: number) {
-    const filtered = workHistory.filter((wh) => wh.id !== id);
-    const newWorkHistory = filtered.map((wh) => {
-      if (wh.id > id) {
-        return {
-          id: wh.id - 1,
-          title: wh.title.slice(0, -1) + id,
-          position: wh.position,
-          location: wh.location,
-          organization: wh.organization,
-          description: wh.description,
-        };
-      }
-
-      return wh;
-    });
-    setWorkHistory(newWorkHistory);
-  }
-
-  function addSkill() {
-    setSkills([...skills, ""]);
-  }
-
-  function removeSkill(index: number) {
-    setSkills(skills.filter((_, i) => i !== index));
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-
-    let formData = new FormData();
-
-    if (formRef.current) {
-      formData = new FormData(formRef.current);
-    }
-
-    await createResume(formData);
+  function sendResume(data: FieldValues) {
+    // Client Side Validation
+    reset();
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(sendResume)}>
       {/* Job Description */}
       <Fieldset legend="Job Description" initiallyOpen>
         <SectionDescription description="Upload a file or paste in a job description that you have found on a job board. This will be analyzed to produce a more targeted resume."></SectionDescription>
@@ -120,72 +70,288 @@ export default function Form() {
       </Fieldset>
       {/* User Information */}
       <Fieldset legend="Personal Information" initiallyOpen>
-        <FormGroup
-          type="text"
-          label="First Name"
-          name="fname"
-          value={resume?.applicant_info.first_name}
-          required
-        />
-        <FormGroup type="text" label="Last Name" name="lname" required />
-        <FormGroup type="email" label="Email Address" name="email" required />
-        <FormGroup type="text" label="Phone Number" name="phone" />
-        <FormGroup type="text" label="Linkedin" name="linkedin" />
-        <FormGroup
-          type="text"
-          label="Portfolio Website"
-          name="portfolio_website"
-        />
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">First Name</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("first_name")}
+            />
+          </label>
+          {errors.first_name && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.first_name.message}`}</span>
+          )}
+        </div>
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Last Name</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("last_name")}
+            />
+          </label>
+          {errors.last_name && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.last_name.message}`}</span>
+          )}
+        </div>
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Email</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("email")}
+            />
+          </label>
+          {errors.email && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.email.message}`}</span>
+          )}
+        </div>
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Phone</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("phone")}
+            />
+          </label>
+          {errors.phone && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.phone.message}`}</span>
+          )}
+        </div>
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Linkedin</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("linkedin")}
+            />
+          </label>
+          {errors.linkedin && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.linkedin.message}`}</span>
+          )}
+        </div>
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Portfolio Website</span>
+            <input
+              className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+              type="text"
+              {...register("website")}
+            />
+          </label>
+          {errors.website && (
+            <span className="mt-4 py-1 px-4 bg-red-400 text-white rounded">{`${errors.website.message}`}</span>
+          )}
+        </div>
       </Fieldset>
 
       {/* Summary */}
       <Fieldset legend="Professional Summary">
         <SectionDescription description="Write a couple sentences to interest the reader! If you don't wish to include anything, our AI system will do its best to generate a well-written summary based on any other information you have given."></SectionDescription>
-        <FormGroup type="textarea" label="Summary" name="summary" />
-      </Fieldset>
-
-      {/* Education */}
-      <Fieldset legend="Education" addNewButtonHandler={() => {}}>
-        <FormGroup type="text" label="Institution" name="institution" />
-        <FormGroup type="text" label="Degree" name="degree" />
-        <FormGroup type="text" label="GPA" name="gpa" />
-        <div className="flex gap-2">
-          <FormGroup
-            type="date"
-            label="Start Date"
-            name="education_start_date"
-          />
-          <FormGroup type="date" label="End Date" name="education_end_date" />
+        <div className="FormGroup max-w-full mb-8">
+          <label className="flex flex-col justify-center">
+            <span className="text-sm text-gray-600">Summary</span>
+            <textarea
+              className="border rounded focus:outline-teal-700 py-1 px-2 text-lg w-full max-w-full"
+              rows={10}
+              {...register("summary")}
+            ></textarea>
+          </label>
+          {errors.summary && <span>{`${errors.summary.message}`}</span>}
         </div>
       </Fieldset>
 
+      {/* Education */}
+      <Fieldset legend="Education" addNewButtonHandler={() => appendEd({})}>
+        {edFields.map((field, index) => {
+          return (
+            <div
+              className="mt-5 p-5 border-2 flex flex-col gap-2 rounded-lg"
+              key={field.id}
+            >
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">School</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                    type="text"
+                    {...register(`education.${index}.school`)}
+                  />
+                </label>
+              </div>
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">Degree</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                    type="text"
+                    {...register(`education.${index}.degree`)}
+                  />
+                </label>
+              </div>
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">GPA</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                    max={4}
+                    min={0}
+                    type="number"
+                    {...register(`education.${index}.gpa`)}
+                  />
+                </label>
+              </div>
+              <div className="flex gap-2">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">Start Date</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative text-gray-400 max-w-[20ch]"
+                    type="date"
+                    {...register(`education.${index}.start_date`)}
+                  />
+                </label>
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">Graduation Date</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative text-gray-400 max-w-[20ch]"
+                    type="date"
+                    {...register(`education.${index}.graduation_date`)}
+                  />
+                </label>
+              </div>
+              <label className="flex gap-4 items-center">
+                <span className="text-sm text-gray-600">Still in college</span>
+                <input
+                  className="text-sm mr-4"
+                  type="checkbox"
+                  {...register(`education.${index}.in_college`)}
+                />
+              </label>
+              <div className="FormGroup max-w-full">
+                <button
+                  className="bg-red-100 py-2 px-6 rounded-full w-max ml-auto hover:scale-105 hover:shadow z-20 active:shadow-sm active:scale-100 flex gap-4 text-red-800"
+                  type="button"
+                  onClick={() => removeEd(index)}
+                >
+                  <span>Remove</span>
+                  <AiFillDelete className="text-red-400 text-2xl" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </Fieldset>
+
       {/* Work History */}
-      <Fieldset legend="Work History" addNewButtonHandler={addWorkHistory}>
-        {workHistory.map((wh) => (
-          <WorkHistory
-            title={wh.title}
-            id={wh.id}
-            removeWorkHistory={removeWorkHistory}
-            key={wh.id}
-            position={wh.position}
-            description={wh.description}
-            location={wh.location}
-            organization={wh.organization}
-          />
-        ))}
+      <Fieldset legend="Work History" addNewButtonHandler={() => append({})}>
+        {fields.map((field, index) => {
+          return (
+            <div
+              className="mt-5 p-5 border-2 flex flex-col gap-2 rounded-lg"
+              key={field.id}
+            >
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">Job Title</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                    type="text"
+                    {...register(`work_history.${index}.job_title`)}
+                  />
+                </label>
+              </div>
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">Employer</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                    type="text"
+                    {...register(`work_history.${index}.employer`)}
+                  />
+                </label>
+              </div>
+              <div className="flex gap-2">
+                <label className="flex gap-4 items-center">
+                  <span className="text-sm text-gray-600">Start Date</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative text-gray-400 max-w-[20ch]"
+                    type="date"
+                    {...register(`work_history.${index}.start_date`)}
+                  />
+                </label>
+                <label className="flex gap-4 items-center">
+                  <span className="text-sm text-gray-600">End Date</span>
+                  <input
+                    className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative text-gray-400 max-w-[20ch]"
+                    type="date"
+                    {...register(`work_history.${index}.end_date`)}
+                  />
+                </label>
+              </div>
+              <div className="FormGroup max-w-full mb-8">
+                <label className="flex flex-col justify-center">
+                  <span className="text-sm text-gray-600">
+                    Responsibilities
+                  </span>
+                  <textarea
+                    className="border rounded focus:outline-teal-700 py-1 px-2 text-lg w-full max-w-full"
+                    rows={10}
+                    {...register(`work_history.${index}.responsibilities`)}
+                  ></textarea>
+                </label>
+              </div>
+              <div className="FormGroup max-w-full">
+                <button
+                  className="bg-red-100 py-2 px-6 rounded-full w-max ml-auto hover:scale-105 hover:shadow z-20 active:shadow-sm active:scale-100 flex gap-4 text-red-800"
+                  type="button"
+                  onClick={() => remove(index)}
+                >
+                  <span>Remove</span>
+                  <AiFillDelete className="text-red-400 text-2xl" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </Fieldset>
 
       {/* Skills */}
-      <Fieldset legend="Skills" addNewButtonHandler={addSkill}>
+      <Fieldset legend="Skills" addNewButtonHandler={() => appendSkill({})}>
         <SectionDescription description="This section will inform the AI which skills should be listed in Skills section of your resume">
           <p className="mt-3 text-gray-700 text-sm mb-1">Recommended Skills:</p>
-          <ul className="flex gap-2 flex-wrap">
+          {/* <ul className="flex gap-2 flex-wrap">
             {recommendedSkills.map((skill, i) => (
               <SkillCard key={i} skill={skill} recommended />
             ))}
-          </ul>
+          </ul> */}
         </SectionDescription>
-        <div>
+        {skillFields.map((field, index) => {
+          return (
+            <div className="mt-5 p-5 flex gap-2 rounded-lg" key={field.id}>
+              <label className="flex flex-col justify-center">
+                <input
+                  className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
+                  type="text"
+                  placeholder="Enter skill.."
+                  {...register(`skills.${index}.value`)}
+                />
+              </label>
+              <button
+                className="bg-red-100 p-2 rounded-full w-max hover:scale-105 hover:shadow z-20 active:shadow-sm active:scale-100 flex gap-4 text-red-800"
+                type="button"
+                onClick={() => removeSkill(index)}
+              >
+                <AiFillDelete className="text-red-400 text-2xl" />
+              </button>
+            </div>
+          );
+        })}
+        {/* <div>
           <p className="mt-3 text-gray-700 text-sm mb-1">My Skills:</p>
           <ul className="flex gap-2 flex-wrap">
             {recommendedSkills.map((skill, i) => (
@@ -207,26 +373,26 @@ export default function Form() {
               <AiFillDelete className="text-red-400 text-lg" />
             </button>
           </div>
-        ))}
+        ))} */}
       </Fieldset>
 
       {/* Certifications */}
-      <Fieldset legend="Certifications" addNewButtonHandler={() => {}}>
+      {/* <Fieldset legend="Certifications" addNewButtonHandler={() => {}}>
         <FormGroup type="text" label="Certificate Name" name="cert_name" />
         <FormGroup type="text" label="Issuer" name="cert_issuer" />
         <FormGroup type="date" label="Date Issued" name="cert_issue_date" />
-      </Fieldset>
+      </Fieldset> */}
 
       {/* External Links */}
-      <Fieldset legend="External Links">
+      {/* <Fieldset legend="External Links">
         <AddNewButton handler={() => {}} />
-      </Fieldset>
+      </Fieldset> */}
 
       {/* Additional Information */}
-      <Fieldset legend="Additional Information">
+      {/* <Fieldset legend="Additional Information">
         <SectionDescription description="Use this to describe any other relevant information that could be used to improve the quality of your resume." />
         <FormGroup type="textarea" name="additionalInfo" />
-      </Fieldset>
+      </Fieldset> */}
 
       <div className="w-full flex gap-4">
         <button

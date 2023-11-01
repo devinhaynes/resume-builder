@@ -14,11 +14,15 @@ type InputType =
 
 type FormGroupProps = {
   label?: string;
-  name?: string;
+  name: string;
   type?: InputType;
   children?: ReactNode;
   value?: string;
-  required?: boolean;
+  placeholder?: string;
+};
+
+type OptionalProps = {
+  name: string;
   placeholder?: string;
 };
 
@@ -26,29 +30,22 @@ export default function FormGroup({
   type,
   label,
   name,
-  required = false,
   placeholder,
 }: FormGroupProps) {
   const ElementToReturn = () => {
     switch (type) {
       case "textarea":
-        return <TextArea name={name} required={required} />;
+        return <TextArea name={name} />;
       case "text":
-        return (
-          <TextInput
-            name={name}
-            required={required}
-            placeholder={placeholder}
-          />
-        );
+        return <TextInput name={name} placeholder={placeholder} />;
       case "checkbox":
-        return <Checkbox />;
+        return <Checkbox name={name} />;
       case "date":
-        return <DatePicker />;
+        return <DatePicker name={name} />;
       case "email":
         return <Email name={name} />;
       case "dropdown":
-        return <Dropdown options={skills} />;
+        return <Dropdown name={name} options={skills} />;
       case "file":
         return <FileInput name={name} acceptableFormats={[".pdf", ".docx"]} />;
       default:
@@ -65,64 +62,43 @@ export default function FormGroup({
   );
 }
 
-type OptionalProps = {
-  name?: string;
-  required?: boolean;
-  placeholder?: string;
-};
-
-function TextArea({ name, required }: OptionalProps) {
+function TextArea({ name }: OptionalProps) {
   return (
     <textarea
       className="border rounded focus:outline-teal-700 py-1 px-2 text-lg w-full max-w-full"
-      name={name}
       rows={10}
-      required={required}
     ></textarea>
   );
 }
 
-function TextInput({ name, required, placeholder }: OptionalProps) {
+function TextInput({ name, placeholder }: OptionalProps) {
   return (
     <input
       className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 relative w-full max-w-[50ch]"
       type="text"
-      name={name}
-      required={required}
       placeholder={placeholder}
     />
   );
 }
 
-function Checkbox({ name, required }: OptionalProps) {
-  return (
-    <input
-      className="text-sm mr-4"
-      type="checkbox"
-      name={name}
-      required={required}
-    />
-  );
+function Checkbox({ name }: OptionalProps) {
+  return <input className="text-sm mr-4" type="checkbox" />;
 }
 
-function DatePicker({ name, required }: OptionalProps) {
+function DatePicker({ name }: OptionalProps) {
   return (
     <input
       className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative text-gray-400 max-w-[20ch]"
       type="date"
-      name={name}
-      required={required}
     />
   );
 }
 
-function Email({ name, required }: OptionalProps) {
+function Email({ name }: OptionalProps) {
   return (
     <input
       className="border-b-2 text-lg focus:outline-teal-700 py-1 px-2 mb-4 relative max-w-[50ch]"
       type="email"
-      name={name}
-      required={required}
     />
   );
 }
@@ -131,12 +107,12 @@ function FileInput({
   name,
   acceptableFormats = [],
 }: OptionalProps & { acceptableFormats: string[] }) {
-  return <input type="file" name={name} accept={acceptableFormats.join(",")} />;
+  return <input type="file" accept={acceptableFormats.join(",")} />;
 }
 
 function Dropdown({ name, options }: OptionalProps & { options: string[] }) {
   return (
-    <select name={name} multiple>
+    <select multiple>
       {options.map((option, i) => (
         <option key={option + i} value={formatOption(option)}>
           {option}

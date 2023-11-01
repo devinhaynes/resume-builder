@@ -8,7 +8,6 @@ type WorkHistoryProps = TWorkHistory & {
 
 export default function WorkHistory({
   id,
-  title,
   position,
   organization,
   location,
@@ -17,7 +16,7 @@ export default function WorkHistory({
 }: WorkHistoryProps) {
   return (
     <div className="WorkHistory mt-5 p-5 border-2 flex flex-col gap-2 rounded-lg">
-      <FormGroup
+      {/* <FormGroup
         type="text"
         label="Job Title"
         name={"position" + id}
@@ -53,7 +52,7 @@ export default function WorkHistory({
         label="Job Description"
         name={"jobDescription" + id}
         value={description}
-      />
+      /> */}
 
       <button
         className="bg-red-100 p-2 rounded-full w-max ml-auto hover:scale-105 hover:shadow z-20 active:shadow-sm active:scale-100"
