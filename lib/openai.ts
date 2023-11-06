@@ -11,12 +11,12 @@ export async function sendChatCompletion(prompts: ChatMessageParams[]) {
   const completion = await openai.chat.completions.create({
     messages: prompts,
     model: "gpt-3.5-turbo",
-    temperature: 0,
+    temperature: 0.2,
   });
 
-  console.log(completion.choices);
+  console.log(completion.choices[0].message);
 
-  return completion.choices[0].message.content;
+  return completion.choices[0].message;
 }
 
 type ChatMessageParams = {
@@ -24,32 +24,49 @@ type ChatMessageParams = {
   content: string;
 };
 
-export function generateChatPrompt(resume: string): ChatMessageParams[] {
-  //   const setup: ChatMessageParams = {
-  //     role: "system",
-  //     content:
-  //       "You are a resume expert you will be assisting me in parsing and formatting resume data.",
-  //   };
-  //   const setJSON: ChatMessageParams = {
-  //     role: "user",
-  //     content: `Use the following JSON structure as a guide for creating a resume:\n${sample_resume}`,
-  //   };
-  //   const assistantAffirmation: ChatMessageParams = {
-  //     role: "assistant",
-  //     content: "Understood. I will use this JSON structure for future reference.",
-  //   };
-  //   const processText: ChatMessageParams = {
-  //     role: "user",
-  //     content: `Process the raw text from the following resume and use the data to generate a new resume JSON file based on the sample resume. If there is no relevant data for a particular field, set the data property to an empty string:\n${resume}`,
-  //   };
-
-  const singlePrompt: ChatMessageParams = {
+export async function generateChatPrompt(
+  resume: string,
+  job_description?: string
+): Promise<OpenAI.Chat.Completions.ChatCompletionMessage> {
+  const setup: ChatMessageParams = {
     role: "system",
-    content: `
-    I have a sample JSON file that represents resume data. I also have raw text data from a resume. Parse the resume text data and fix any issues. Then input that data into the proper fields of the sample JSON file. Use the strict properties and data types that are in the sample JSON. If the text data does not have values for specific properties, set those properties to an empty string or array. Do not input anything into the job_description, cover_letter, or thank_you_letter sections, but keep them in the JSON file. Only output the final JSON.\n\nSample JSON: ${JSON.stringify(
-      sample_resume
-    )}\n\nRaw Text: ${resume}`,
+    content:
+      "You are a successful career coach who specializes in assisting people improve their resumes.",
   };
 
-  return [singlePrompt];
+  const initialPrompt: ChatMessageParams = {
+    role: "user",
+    content: `Using the following resume, improve the summary and work experience items so they sound more professional and more appealing to a hiring manager:"""\n${JSON.stringify(
+      resume
+    )}"""`,
+  };
+
+  const initialResponse = await sendChatCompletion([setup, initialPrompt]);
+
+  const secondaryPrompt = `Add the resume information, including the enhanced summary and work experience, into the following JSON structure:"""${JSON.stringify(
+    sample_resume
+  )}"""\nOnly output the JSON.`;
+
+  const json = await sendChatCompletion([
+    setup,
+    initialPrompt,
+    { role: "assistant", content: initialResponse.content! },
+    { role: "user", content: secondaryPrompt },
+  ]);
+
+  const final = job_description
+    ? await sendChatCompletion([
+        setup,
+        initialPrompt,
+        { role: "assistant", content: initialResponse.content! },
+        { role: "user", content: secondaryPrompt },
+        { role: "assistant", content: json.content! },
+        {
+          role: "user",
+          content: `Use the job description information to enhance the work experience responsibilities and summary using key words and ideas from the job posting:"""${job_description}"""`,
+        },
+      ])
+    : json;
+
+  return final;
 }
